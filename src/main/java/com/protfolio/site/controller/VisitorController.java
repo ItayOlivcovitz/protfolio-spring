@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -28,26 +30,22 @@ public class VisitorController {
 
     @PostMapping("/save")
     public ResponseEntity<Visitor> saveVisitorInfo(@RequestBody Visitor visitor) {
-        System.out.println("Received Visitor: " + visitor);
-
         // Set default IP if not provided
         if (visitor.getIp() == null || visitor.getIp().isEmpty()) {
             visitor.setIp("AUTO");
         }
 
-        // Set the current date and time
-        if (visitor.getDate() == null) {
-            visitor.setDate(LocalDateTime.now()); // Store as LocalDateTime
-        }
+        // Set the current date and time as LocalDateTime
+        LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Jerusalem")).toLocalDateTime();
+        visitor.setDate(now); // Set as LocalDateTime
 
-        // Log the formatted date for debugging purposes
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm");
-        String formattedNow = visitor.getDate().format(formatter); // Format the date for display
-        System.out.println("Formatted Visitor Date: " + formattedNow);
-
+        // Save the visitor information
         Visitor savedVisitor = visitorService.saveVisitor(visitor);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedVisitor);
     }
+
+
+
 
     @GetMapping("/count")
     public ResponseEntity<Long> getVisitorCount() {
