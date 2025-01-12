@@ -1,4 +1,3 @@
-# Use a base image with JDK 17
 FROM eclipse-temurin:17-jdk-jammy as builder
 
 # Set the working directory inside the container
@@ -7,13 +6,14 @@ WORKDIR /app
 # Copy all project files to the container
 COPY . .
 
-# Run Maven to build the project and skip tests
+# Ensure Maven wrapper has executable permissions
+RUN chmod +x mvnw
+
+# Build the project and skip tests
 RUN ./mvnw clean package -DskipTests
 
 # Use a smaller runtime image to run the application
 FROM eclipse-temurin:17-jdk-jammy
-
-# Set the working directory for the runtime container
 WORKDIR /app
 
 # Copy the built JAR file from the builder stage to the runtime image
