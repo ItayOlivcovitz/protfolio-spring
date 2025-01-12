@@ -8,15 +8,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/visitor")
-@CrossOrigin(origins = "https://itay-olivcovitz-portfolio.up.railway.app") // Allow CORS for specific origin
-@RequiredArgsConstructor // Replaces @Autowired for cleaner dependency injection
+@CrossOrigin(origins = {"http://localhost:8080", "https://itay-olivcovitz-portfolio.up.railway.app"}) // Allowed origins
 public class VisitorController {
 
     private final VisitorService visitorService;
+    public VisitorController(VisitorService visitorService) {
+        this.visitorService = visitorService;
+    }
 
     @GetMapping("/info")
     public ResponseEntity<List<Visitor>> getVisitorInfo() {
@@ -32,8 +35,18 @@ public class VisitorController {
             visitor.setIp("AUTO");
         }
 
-        // Set default date if not provided
-        visitor.setDate(visitor.getDate() == null ? LocalDateTime.now() : visitor.getDate());
+        // Parse the date if it's provided as a string
+        if (visitor.getDate() == null) {
+            visitor.setDate(LocalDateTime.now());
+        } else {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy /HH:mm");
+                visitor.setDate(LocalDateTime.parse(visitor.getDate().toString(), formatter));
+            } catch (Exception e) {
+                System.out.println("Error parsing date: " + e.getMessage());
+                visitor.setDate(LocalDateTime.now());
+            }
+        }
 
         Visitor savedVisitor = visitorService.saveVisitor(visitor);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedVisitor);

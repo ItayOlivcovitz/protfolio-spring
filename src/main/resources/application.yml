@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
@@ -14,3 +15,19 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  web:
+    cors:
+      allowed-origins: "http://localhost:8080, https://itay-olivcovitz-portfolio.up.railway.app"
+      allowed-methods: "GET, POST, PUT, DELETE, OPTIONS"
+      allowed-headers: "*"
+      allow-credentials: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # Expose all Actuator endpoints
+
+  endpoint:
+    health:
+      show-details: always # Show full health details

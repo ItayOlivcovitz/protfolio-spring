@@ -7,7 +7,7 @@ export async function saveVisitorInfo() {
         const visitorInfo = {
             ip: ip || 'AUTO', // Use 'AUTO' if IP could not be fetched
             platform: getPlatform(),
-            timestamp: getFormattedTimestamp(), // Current date and time in a readable format
+            timestamp: getFormattedTimestamp(), // Current date and time in ISO format
         };
 
         console.log('Visitor Info to Save:', visitorInfo); // Log the gathered visitor info
@@ -21,15 +21,16 @@ export async function saveVisitorInfo() {
             body: JSON.stringify(visitorInfo), // Send JSON object
         });
 
-        if (response.ok) {
-            console.log('Visitor info saved successfully:', visitorInfo);
-        } else {
-            // Log the server's response if the request failed
+        if (!response.ok) {
+            // Log server's response if the request failed
             const errorMessage = await response.text();
             console.error(`Failed to save visitor info. Status: ${response.status}, Message: ${errorMessage}`);
+            return;
         }
+
+        console.log('Visitor info saved successfully:', visitorInfo);
     } catch (error) {
-        console.error('Error saving visitor info:', error);
+        console.error('Error saving visitor info:', error.message);
     }
 }
 
@@ -43,24 +44,23 @@ function getPlatform() {
     return 'Other';
 }
 
-// Helper function to get the public IP address (Optional)
+// Helper function to get the public IP address
 async function getIPAddress() {
     try {
         const response = await fetch('https://api.ipify.org?format=json');
-        if (response.ok) {
-            const data = await response.json();
-            return data.ip; // Return the public IP address
-        } else {
+        if (!response.ok) {
             console.error(`Failed to fetch IP address. Status: ${response.status}`);
+            return null;
         }
+        const data = await response.json();
+        return data.ip; // Return the public IP address
     } catch (error) {
-        console.error('Error fetching IP address:', error);
+        console.error('Error fetching IP address:', error.message);
+        return null; // Return null if IP fetching fails
     }
-    return null; // Return null if IP fetching fails
 }
 
 // Helper function to format the current timestamp
 function getFormattedTimestamp() {
-    const date = new Date();
-    return date.toISOString(); // ISO 8601 format (e.g., "2025-01-12T18:25:43.511Z")
+    return new Date().toISOString(); // ISO 8601 format (e.g., "2025-01-12T18:25:43.511Z")
 }
