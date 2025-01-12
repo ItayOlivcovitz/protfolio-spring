@@ -13,7 +13,7 @@ export async function saveVisitorInfo() {
         console.log('Visitor Info to Save:', visitorInfo); // Log the gathered visitor info
 
         // Send a POST request to the Visitor Tracker API
-        const response = await fetch('https://itay-olivcovitz-portfolio.up.railway.app/api/save', {
+        const response = await fetch('https://itay-olivcovitz-portfolio.up.railway.app/api/visitor/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
