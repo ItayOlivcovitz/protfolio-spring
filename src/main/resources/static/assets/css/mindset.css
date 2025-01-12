@@ -1,0 +1,81 @@
+/* Container for grid layout */
+.icon-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns by default */
+  gap: 15px 10px; /* Consistent gap between items */
+  max-width: 800px; /* Limit container width */
+  margin: auto; /* Center the container horizontally */
+  padding: 0;
+  justify-items: center; /* Center items in their grid cells */
+  text-align: center; /* Center-align text under icons */
+  color: #f8f8f8; /* White color */
+}
+
+/* Hide scrollbar for horizontal scrolling (if necessary) */
+.icon-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+}
+
+/* Icon wrapper for each item */
+.icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px; /* Spacing between icon and text */
+}
+
+/* Icon styles */
+.icon {
+  width: 100px; /* Default width for icons */
+  height: 100px; /* Default height for icons */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem; /* Icon size */
+  text-align: center;
+  margin-bottom: 4px; /* Space below the icon */
+}
+
+/* Font-based icon styles */
+.icon i {
+  font-size: 3rem; /* Larger font-based icon size */
+  color: #e2493b; /* Icon color */
+}
+
+/* Text styles under icons */
+.icon-description {
+  font-size: 0.9rem;
+  line-height: 1.4; /* Better readability */
+  margin-top: 4px; /* Space above the description */
+  max-width: 200px; /* Restrict text width */
+}
+
+/* Responsive adjustments for tablets and mobile */
+@media (max-width: 768px) {
+  .icon-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+    gap: 10px; /* Reduce gap for better fit */
+    padding: 0 10px; /* Add padding to prevent clipping */
+  }
+
+  .icon-wrapper.centered {
+    display: none; /* Hide the centered icon on smaller screens */
+  }
+
+  .icon {
+    width: 80px; /* Smaller circle on mobile */
+    height: 80px;
+    font-size: 2rem; /* Adjust font size */
+  }
+
+  .icon i {
+    font-size: 2rem; /* Adjust icon size */
+  }
+
+  /* Adjust text styles for smaller screens */
+  .icon-description {
+    font-size: 0.85rem; /* Smaller font for mobile */
+    line-height: 1.2; /* Tighter spacing */
+    margin-top: 2px; /* Reduce space above the description */
+  }
+}

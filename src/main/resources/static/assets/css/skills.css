@@ -1,0 +1,30 @@
+.skills-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Default: 3 items per row */
+  gap: 20px;
+  justify-items: center;
+  align-items: center;
+  padding: 10px;
+}
+.skill-item {
+  text-align: center;
+  padding: 10px;
+}
+.skill-item img {
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+/* Tablet Screens (768px and below) */
+@media (max-width: 768px) {
+  .skills-container {
+    grid-template-columns: repeat(2, 1fr); /* Two items per row */
+  }
+}
+/* Mobile Screens (480px and below) */
+@media (max-width: 480px) {
+  .skills-container {
+    grid-template-columns: repeat(3, 1fr); /* Three items per row */
+    gap: 10px; /* Optional: Adjust gap for smaller screens */
+  }
+}
+
