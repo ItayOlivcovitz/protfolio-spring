@@ -35,18 +35,15 @@ public class VisitorController {
             visitor.setIp("AUTO");
         }
 
-        // Parse the date if it's provided as a string
+        // Set the current date and time
         if (visitor.getDate() == null) {
-            visitor.setDate(LocalDateTime.now());
-        } else {
-            try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy /HH:mm");
-                visitor.setDate(LocalDateTime.parse(visitor.getDate().toString(), formatter));
-            } catch (Exception e) {
-                System.out.println("Error parsing date: " + e.getMessage());
-                visitor.setDate(LocalDateTime.now());
-            }
+            visitor.setDate(LocalDateTime.now()); // Store as LocalDateTime
         }
+
+        // Log the formatted date for debugging purposes
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm");
+        String formattedNow = visitor.getDate().format(formatter); // Format the date for display
+        System.out.println("Formatted Visitor Date: " + formattedNow);
 
         Visitor savedVisitor = visitorService.saveVisitor(visitor);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedVisitor);
