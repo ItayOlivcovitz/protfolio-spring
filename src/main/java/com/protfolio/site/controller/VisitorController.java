@@ -35,6 +35,7 @@ public class VisitorController {
             visitor.setIp("AUTO");
         }
 
+
         // Set the current date and time as LocalDateTime
         LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Jerusalem")).toLocalDateTime();
         visitor.setDate(now); // Set as LocalDateTime
